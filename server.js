@@ -7,16 +7,79 @@ const articleRouter = require('./routes/articles')
 const methodOverride = require('method-override')
 const app = express()
 
+const http = require('http');
 
+const normalizePort = val => {
+  const port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    return val;
+  }
+  if (port >= 0) {
+    return port;
+  }
+  return false;
+};
+const port = normalizePort(process.env.PORT || '5000');
+app.set('port', port);
+
+
+const errorHandler = error => {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port: ' + port;
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges.');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use.');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+};
 
 // set DB  mongoose, put whatever name, in this case blog
 // mongoose.connect('mongodb://localhost/blog', {
  
 // })
 
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/blog', {
+// mongoose.connect(process.env.DB_URL || 'mongodb://localhost/blog', {
 
-});
+// });
+
+async function dbConnect() {
+  // use mongoose to connect this app to our database on mongoDB using the DB_URL (connection string)
+  mongoose
+    .connect(
+        process.env.DB_URL || 'mongodb://localhost/blog',
+      {
+        //   these are options to ensure that the connection is done properly
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+        useCreateIndex: true,
+      }
+    )
+    .then(() => {
+      console.log("Successfully connected to MongoDB Atlas!");
+    })
+    .catch((error) => {
+      console.log("Unable to connect to MongoDB Atlas!");
+      console.error(error);
+    });
+}
+
+module.exports = dbConnect;
+
+
+
+
+// ============================================
 
 // set view engine
 app.set('view engine', 'ejs')
@@ -54,6 +117,18 @@ app.get('/', async (req, res) => {
 // use the router. The /articles will force to all websites beggins with that.
 app.use('/articles',articleRouter)
 
-const port = process.env.PORT || 5000;
-app.listen(port);
 
+// app.listen(port);
+
+
+const server = http.createServer(app);
+
+server.on('error', errorHandler);
+server.on('listening', () => {
+  const address = server.address();
+  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+  console.log('Listening on ' + bind);
+});
+
+server.listen(port);
+module.exports = app;

@@ -5,6 +5,8 @@ const createDomPurify = require('dompurify')
 const { JSDOM } = require('jsdom')
 const dompurify = createDomPurify(new JSDOM().window)
 
+
+
 const articleSchema = new mongoose.Schema({
   title: {
     type: String,
@@ -44,11 +46,11 @@ articleSchema.pre('validate', function(next) {
   next()
 })
 
-if (mongoose.models.Article) {
-    delete mongoose.models.Article
-}
-mongoose.models = {}
-var Admin = mongoose.models.Article || mongoose.model('Article', articleSchema)
+// if (mongoose.models.Article) {
+//     delete mongoose.models.Article
+// }
+// mongoose.models = {}
+var Admin = mongoose.model.Article || mongoose.model('Article', articleSchema)
 // module.exports = mongoose.model('Article', articleSchema)
 
 module.exports = Admin
