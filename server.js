@@ -53,16 +53,12 @@ const errorHandler = error => {
 
 // });
 
-async function dbConnect() {
-  // use mongoose to connect this app to our database on mongoDB using the DB_URL (connection string)
-  mongoose
+ mongoose
     .connect(
         process.env.DB_URL || 'mongodb://localhost/blog',
       {
         //   these are options to ensure that the connection is done properly
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        useCreateIndex: true,
+
       }
     )
     .then(() => {
@@ -72,9 +68,7 @@ async function dbConnect() {
       console.log("Unable to connect to MongoDB Atlas!");
       console.error(error);
     });
-}
 
-module.exports = dbConnect;
 
 
 
@@ -118,17 +112,17 @@ app.get('/', async (req, res) => {
 app.use('/articles',articleRouter)
 
 
-// app.listen(port);
+app.listen(port);
 
 
-const server = http.createServer(app);
+// const server = http.createServer(app);
 
-server.on('error', errorHandler);
-server.on('listening', () => {
-  const address = server.address();
-  const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
-  console.log('Listening on ' + bind);
-});
+// server.on('error', errorHandler);
+// server.on('listening', () => {
+//   const address = server.address();
+//   const bind = typeof address === 'string' ? 'pipe ' + address : 'port ' + port;
+//   console.log('Listening on ' + bind);
+// });
 
-server.listen(port);
-module.exports = app;
+// server.listen(port);
+// module.exports = app;
