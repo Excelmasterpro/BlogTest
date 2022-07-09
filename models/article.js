@@ -47,7 +47,7 @@ articleSchema.pre('validate', function(next) {
 if (mongoose.models.Article) {
     delete mongoose.models.Article
 }
-
+mongoose.models = {}
 var Admin = mongoose.models.Article || mongoose.model('Article', articleSchema)
 // module.exports = mongoose.model('Article', articleSchema)
 
