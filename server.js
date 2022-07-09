@@ -54,4 +54,6 @@ app.get('/', async (req, res) => {
 // use the router. The /articles will force to all websites beggins with that.
 app.use('/articles',articleRouter)
 
-app.listen(5000)
+const port = process.env.PORT || 5000;
+app.listen(port);
+
