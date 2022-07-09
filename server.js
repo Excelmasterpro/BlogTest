@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const Article = require('./models/article')
+const Article = require('./models/article2')
 const articleRouter = require('./routes/articles')
 const methodOverride = require('method-override')
 const app = express()
@@ -8,9 +8,13 @@ const app = express()
 
 
 // set DB  mongoose, put whatever name, in this case blog
-mongoose.connect('mongodb://localhost/blog', {
+// mongoose.connect('mongodb://localhost/blog', {
  
-})
+// })
+
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/blog', {
+
+});
 
 // set view engine
 app.set('view engine', 'ejs')
