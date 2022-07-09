@@ -44,7 +44,7 @@ articleSchema.pre('validate', function(next) {
   next()
 })
 
-var Admin = mongoose.models.Admin || mongoose.model('Article', articleSchema)
+var Admin = mongoose.models.articleSchema || mongoose.model('Article', articleSchema)
 // module.exports = mongoose.model('Article', articleSchema)
 
 module.exports = Admin
