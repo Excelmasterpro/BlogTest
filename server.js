@@ -20,7 +20,8 @@ const normalizePort = val => {
   }
   return false;
 };
-const port = normalizePort(process.env.PORT || '5000');
+const port = process.env.PORT || 5000
+// const port = normalizePort(process.env.PORT || '5000');
 app.set('port', port);
 
 
@@ -112,7 +113,7 @@ app.get('/', async (req, res) => {
 app.use('/articles',articleRouter)
 
 
-app.listen(port);
+app.listen(port, () => console.log(`listening on port ${port}`));
 
 
 // const server = http.createServer(app);
